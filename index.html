@@ -193,6 +193,50 @@
                 font-size: 2rem;
             }
         }
+    
+        
+        /* Tab Navigation */
+        .tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        
+        .tab-button {
+            padding: 1rem 2rem;
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #666;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .tab-button:hover {
+            color: #667eea;
+            background: #f9fafb;
+        }
+        
+        .tab-button.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+            background: white;
+        }
+        
+        .tab-content {
+            display: none;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .tab-icon {
+            margin-right: 0.5rem;
+        }
     </style>
 </head>
 <body>
@@ -202,29 +246,42 @@
         
         <div class="stats">
             <div class="stat-card">
-                <div class="stat-number" id="totalClinics">125</div>
-                <div class="stat-label">Total Providers</div>
+                <div class="stat-number">125</div>
+                <div class="stat-label">In-Person Providers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">22</div>
+                <div class="stat-label">Telehealth Vendors</div>
             </div>
             <div class="stat-card">
                 <div class="stat-number">6</div>
                 <div class="stat-label">States Covered</div>
-            </div>
-            <div class="stat-card">
-                <div class="stat-number">82</div>
-                <div class="stat-label">Planned Parenthood</div>
             </div>
         </div>
         
         <div class="info-box">
             <h3>📍 About This Directory</h3>
             <p>
-                This directory provides comprehensive abortion access information across all <strong>6 New England states</strong>: Connecticut (20), Massachusetts (60), Maine (23), New Hampshire (9), Rhode Island (2), and Vermont (11). 
-                Data includes service types, wait times, pricing, insurance acceptance, and language support to help people make informed decisions about their reproductive healthcare.
+                This directory provides comprehensive abortion access information across all <strong>6 New England states</strong>. 
+                Choose between <strong>in-person providers</strong> (125 clinics and hospitals) or <strong>telehealth services</strong> (22 vendors offering medication abortion by mail). 
+                Data includes service types, gestational limits, pricing, insurance, and language support to help you make informed decisions about your reproductive healthcare.
             </p>
         </div>
         
-        <div class="info-box">
-            <h3>📊 How to use this directory:</h3>
+        <!-- Tab Navigation -->
+        <div class="tabs">
+            <button class="tab-button active" onclick="switchTab('inperson')">
+                <span class="tab-icon">🏥</span> In-Person Providers
+            </button>
+            <button class="tab-button" onclick="switchTab('telehealth')">
+                <span class="tab-icon">💻</span> Telehealth Services
+            </button>
+        </div>
+        
+        <!-- In-Person Providers Tab -->
+        <div id="inperson-tab" class="tab-content active">
+            <div class="info-box">
+                <h3>📊 How to use this table:</h3>
             <p>
                 <strong>Search:</strong> Use the search box to find specific providers, locations, or services<br>
                 <strong>Sort:</strong> Click any column header to sort the data<br>
@@ -254,7 +311,44 @@
             <tbody>
                 <!-- Data will be populated by JavaScript -->
             </tbody>
-        </table>
+            </table>
+        </div>
+        
+        <!-- Telehealth Services Tab -->
+        <div id="telehealth-tab" class="tab-content">
+            <div class="info-box">
+                <h3>💊 About Telehealth Abortion Services</h3>
+                <p>
+                    These vendors provide <strong>medication abortion by mail</strong> (also called "abortion pills"). After a virtual consultation, 
+                    you receive mifepristone and misoprostol delivered to your home. This option is typically available through early pregnancy 
+                    (gestational limits vary by vendor). Most offer financial assistance and sliding scale pricing.
+                </p>
+            </div>
+            
+            <div class="info-box">
+                <h3>📊 Telehealth Coverage by State:</h3>
+                <p>
+                    <strong>Connecticut:</strong> 18 options • <strong>Maine:</strong> 18 options • <strong>Massachusetts:</strong> 16 options<br>
+                    <strong>New Hampshire:</strong> 13 options • <strong>Rhode Island:</strong> 15 options • <strong>Vermont:</strong> 15 options
+                </p>
+            </div>
+            
+            <table id="telehealthTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>Available In</th>
+                        <th>Telehealth Vendor</th>
+                        <th>Gestational Limit</th>
+                        <th>Languages</th>
+                        <th>Price</th>
+                        <th>Insurance & Payment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- jQuery -->
@@ -2150,6 +2244,771 @@
         "RENF"
     ]
 ];
+
+        // Telehealth Vendor Data - All 6 States
+        const telehealthData = [
+    [
+        "Connecticut",
+        "Abuzz",
+        "12 weeks, 6 days",
+        "English",
+        "$0-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "Early Options - Abortion Pills by Mail",
+        "10 weeks, 0 days",
+        "English",
+        "$900",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "Hey Jane",
+        "10 weeks, 0 days",
+        "English",
+        "$0-499",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "Maitri Wellness",
+        "12 weeks, 6 days",
+        "English",
+        "$150 for pills; $225 with video consultation",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "Metro Area Modern Reproductive Care - Telehealth",
+        "12 weeks, 6 days",
+        "English",
+        "$165",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "MYA Network",
+        "12 weeks, 0 days",
+        "English",
+        "$600",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "SameDayAbortionPills",
+        "10 weeks, 0 days",
+        "English",
+        "$335",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "Wisp",
+        "10 weeks, 0 days",
+        "English",
+        "$200",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "A Safe Choice",
+        "12 weeks, 6 days",
+        "English, French",
+        "$150",
+        "Out-of-pocket"
+    ],
+    [
+        "Connecticut",
+        "Women\u2019s Aid Center - Telehealth",
+        "10 weeks, 0 days",
+        "English, Hindi, Russian, Spanish, Urdu",
+        "$370",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "199 Abortion Telemedicine",
+        "13 weeks, 0 days",
+        "English, offers interpretation services",
+        "$199",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "Abortion on Demand",
+        "10 weeks, 0 days",
+        "English, Spanish",
+        "$0-389",
+        "Out-of-pocket; offers financial assistance through The REACH Fund of Connecticut"
+    ],
+    [
+        "Connecticut",
+        "Aid Access",
+        "13 weeks, 6 days",
+        "English, Spanish",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "Cambridge Reproductive Health Consultants - The MAP",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$5-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "Juniper Midwifery",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$100",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "We Take Care of Us",
+        "12 weeks, 6 days",
+        "English, Spanish",
+        "$150-300",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Connecticut",
+        "carafem",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$0-399",
+        "Out-of-pocket; offers financial assistance through The REACH Fund of Connecticut"
+    ],
+    [
+        "Connecticut",
+        "Choices Rising",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "199 Abortion Telemedicine",
+        "13 weeks, 0 days",
+        "English, offers interpretation services",
+        "$199",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "A Safe Choice",
+        "12 weeks, 6 days",
+        "English, French",
+        "$150",
+        "Out-of-pocket"
+    ],
+    [
+        "Massachusetts",
+        "Abortion on Demand",
+        "10 weeks, 0 days",
+        "English, Spanish",
+        "$0-389",
+        "Out-of-pocket"
+    ],
+    [
+        "Massachusetts",
+        "Abuzz",
+        "12 weeks, 6 days",
+        "English",
+        "$0-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "Aid Access",
+        "13 weeks, 6 days",
+        "English, Spanish",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "Cambridge Reproductive Health Consultants - The MAP",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$5-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "carafem",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$0-399",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "Choices Rising",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "Forward Midwifery",
+        "12 weeks, 6 days",
+        "English, Spanish, offers interpretation services",
+        "$150",
+        "Out-of-pocket; offers a sliding scale and \u201cpay what you can\u201d model"
+    ],
+    [
+        "Massachusetts",
+        "Hey Jane",
+        "10 weeks, 0 days",
+        "English",
+        "$0-499",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "Juniper Midwifery",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$100",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "Metro Area Modern Reproductive Care",
+        "12 weeks, 6 days",
+        "English",
+        "$165",
+        "Out-of-pocket"
+    ],
+    [
+        "Massachusetts",
+        "SameDayAbortionPills",
+        "10 weeks, 0 days",
+        "English",
+        "$335",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "Sunny",
+        "11 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$175",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "We Take Care of Us",
+        "12 weeks, 6 days",
+        "English, Spanish",
+        "$150-300",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Massachusetts",
+        "Women\u2019s Aid Center - Telehealth",
+        "10 weeks, 0 days",
+        "English, Hindi, Russian, Spanish, Urdu",
+        "$370",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "199 Abortion Telemedicine",
+        "13 weeks, 0 days",
+        "English, offers interpretation services",
+        "$199",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "A Safe Choice",
+        "12 weeks, 6 days",
+        "English, French",
+        "$150",
+        "Out-of-pocket"
+    ],
+    [
+        "Maine",
+        "Abortion on Demand",
+        "10 weeks, 0 days",
+        "English, Spanish",
+        "$0-389",
+        "Out-of-pocket; offers financial assistance through Safe Abortions for Everyone (SAFE) Maine"
+    ],
+    [
+        "Maine",
+        "Abuzz",
+        "12 weeks, 6 days",
+        "English",
+        "$0-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "Aid Access",
+        "13 weeks, 6 days",
+        "English, Spanish",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "Cambridge Reproductive Health Consultants - The MAP",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$5-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "carafem",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$0-399",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "Choices Rising",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "Hey Jane",
+        "10 weeks, 0 days",
+        "English",
+        "$0-499",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "Juniper Midwifery",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$100",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "Maitri Wellness",
+        "12 weeks, 6 days",
+        "English",
+        "$150 for pills; $225 with video consultation",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "Metro Area Modern Reproductive Care",
+        "12 weeks, 6 days",
+        "English",
+        "$165",
+        "Out-of-pocket"
+    ],
+    [
+        "Maine",
+        "SameDayAbortionPills",
+        "10 weeks, 0 days",
+        "English",
+        "$335",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "We Take Care of Us",
+        "12 weeks, 6 days",
+        "English, Spanish",
+        "$150-300",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "Wisp",
+        "10 weeks, 0 days",
+        "English",
+        "$200",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "Women\u2019s Aid Center - Telehealth",
+        "10 weeks, 0 days",
+        "English, Hindi, Russian, Spanish, Urdu",
+        "$370",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Maine",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Maine",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "New Hampshire",
+        "Abortion on Demand",
+        "10 weeks, 0 days",
+        "English, Spanish",
+        "$0-389",
+        "Out-of-pocket"
+    ],
+    [
+        "New Hampshire",
+        "Hey Jane",
+        "10 weeks, 0 days",
+        "English",
+        "$0-499",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "New Hampshire",
+        "SameDayAbortionPills",
+        "10 weeks, 0 days",
+        "English",
+        "$335",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "New Hampshire",
+        "Cambridge Reproductive Health Consultants - The MAP",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$5-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "New Hampshire",
+        "Juniper Midwifery",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$100",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "New Hampshire",
+        "Choices Rising",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "New Hampshire",
+        "A Safe Choice",
+        "12 weeks, 6 days",
+        "English, French",
+        "$150",
+        "Out-of-pocket"
+    ],
+    [
+        "New Hampshire",
+        "Abuzz",
+        "12 weeks, 6 days",
+        "English",
+        "$0-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "New Hampshire",
+        "We Take Care of Us",
+        "12 weeks, 6 days",
+        "English, Spanish",
+        "$150-300",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "New Hampshire",
+        "199 Abortion Telemedicine",
+        "13 weeks, 0 days",
+        "English, offers interpretation services",
+        "$199",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "New Hampshire",
+        "Aid Access",
+        "13 weeks, 6 days",
+        "English, Spanish",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "New Hampshire",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "New Hampshire",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Rhode Island",
+        "199 Abortion Telemedicine",
+        "13 weeks, 0 days",
+        "English, offers interpretation services",
+        "$199",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "A Safe Choice",
+        "12 weeks, 6 days",
+        "English, French",
+        "$150",
+        "Out-of-pocket"
+    ],
+    [
+        "Rhode Island",
+        "Abortion on Demand",
+        "10 weeks, 0 days",
+        "English, Spanish",
+        "$0-389",
+        "Out-of-pocket"
+    ],
+    [
+        "Rhode Island",
+        "Abuzz",
+        "12 weeks, 6 days",
+        "English",
+        "$0-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "Aid Access",
+        "13 weeks, 6 days",
+        "English, Spanish",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "Cambridge Reproductive Health Consultants - The MAP",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$5-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "carafem",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$0-399",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "Choices Rising",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "Hey Jane",
+        "10 weeks, 0 days",
+        "English",
+        "$0-499",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "Juniper Midwifery",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$100",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "SameDayAbortionPills",
+        "10 weeks, 0 days",
+        "English",
+        "$335",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "We Take Care of Us",
+        "12 weeks, 6 days",
+        "English, Spanish",
+        "$150-300",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "Women\u2019s Aid Center - Telehealth",
+        "10 weeks, 0 days",
+        "English, Hindi, Russian, Spanish, Urdu",
+        "$370",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Rhode Island",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Rhode Island",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Vermont",
+        "Hey Jane",
+        "10 weeks, 0 days",
+        "English",
+        "$0-499",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "SameDayAbortionPills",
+        "10 weeks, 0 days",
+        "English",
+        "$335",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "Maitri Wellness",
+        "12 weeks, 0 days",
+        "English",
+        "$150 for pills; $225 with video consultation",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "MYA Network",
+        "12 weeks, 0 days",
+        "English",
+        "$600",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "Abuzz",
+        "12 weeks, 6 days",
+        "English",
+        "$0-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "A Safe Choice",
+        "12 weeks, 6 days",
+        "English, French",
+        "$150",
+        "Out-of-pocket"
+    ],
+    [
+        "Vermont",
+        "Women\u2019s Aid Center - Telehealth",
+        "10 weeks, 0 days",
+        "English, Hindi, Russian, Spanish, Urdu",
+        "$370",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "199 Abortion Telemedicine",
+        "13 weeks, 0 days",
+        "English, offers interpretation services",
+        "$199",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "Abortion on Demand",
+        "10 weeks, 0 days",
+        "English, Spanish",
+        "$0-389",
+        "Out-of-pocket"
+    ],
+    [
+        "Vermont",
+        "Cambridge Reproductive Health Consultants - The MAP",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$5-150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "Juniper Midwifery",
+        "11 weeks, 0 days",
+        "English, Spanish",
+        "$100",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "We Take Care of Us",
+        "12 weeks, 6 days",
+        "English, Spanish",
+        "$150-300",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "Aid Access",
+        "13 weeks, 6 days",
+        "English, Spanish",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "carafem",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$0-399",
+        "Out-of-pocket; offers financial assistance"
+    ],
+    [
+        "Vermont",
+        "Choices Rising",
+        "12 weeks, 0 days",
+        "English, Spanish, offers interpretation services",
+        "$150",
+        "Out-of-pocket; offers financial assistance"
+    ]
+];
+
 
         $(document).ready(function() {
             // Add badges to Yes/No columns (indexes shift by 1 due to State column)
