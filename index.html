@@ -270,10 +270,10 @@
         
         <!-- Tab Navigation -->
         <div class="tabs">
-            <button class="tab-button active" onclick="switchTab('inperson')">
+            <button class="tab-button active" onclick="switchTab('inperson', event)">
                 <span class="tab-icon">🏥</span> In-Person Providers
             </button>
-            <button class="tab-button" onclick="switchTab('telehealth')">
+            <button class="tab-button" onclick="switchTab('telehealth', event)">
                 <span class="tab-icon">💻</span> Telehealth Services
             </button>
         </div>
@@ -3109,9 +3109,108 @@
                         previous: "Previous"
                     }
                 },
-                order: [[0, 'asc']] // Sort by provider name by default
+                order: [[0, 'asc']] // Sort by state by default
+            });
+            
+            // Initialize Telehealth Table
+            $('#telehealthTable').DataTable({
+                data: telehealthData,
+                pageLength: 25,
+                responsive: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        text: '📋 Copy',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        text: '📄 CSV',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        text: '📊 Excel',
+                        title: 'New England Telehealth Abortion Services',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '📑 PDF',
+                        title: 'New England Telehealth Abortion Services',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: '🖨️ Print',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: [0], // State column
+                        width: '120px'
+                    },
+                    {
+                        targets: [5], // Insurance column
+                        width: '250px'
+                    }
+                ],
+                language: {
+                    search: "Search telehealth vendors:",
+                    lengthMenu: "Show _MENU_ vendors per page",
+                    info: "Showing _START_ to _END_ of _TOTAL_ listings",
+                    infoEmpty: "No vendors available",
+                    infoFiltered: "(filtered from _MAX_ total listings)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                },
+                order: [[0, 'asc']] // Sort by state by default
             });
         });
+        
+        // Tab switching function
+        function switchTab(tabName, event) {
+            // Prevent default behavior
+            if (event) {
+                event.preventDefault();
+            }
+            
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all buttons
+            document.querySelectorAll('.tab-button').forEach(button => {
+                button.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName + '-tab').classList.add('active');
+            
+            // Add active class to clicked button
+            if (event) {
+                event.target.closest('.tab-button').classList.add('active');
+            }
+        }
     </script>
 </body>
 </html>
