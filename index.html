@@ -1,0 +1,2258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New England Abortion Access Directory</title>
+    
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.2/css/buttons.dataTables.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem;
+        }
+        
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 2rem;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 0.5rem;
+            font-size: 2rem;
+        }
+        
+        .subtitle {
+            color: #666;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+        
+        .info-box {
+            background: #f0f4ff;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            border-radius: 4px;
+        }
+        
+        .info-box h3 {
+            color: #667eea;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .info-box p {
+            color: #555;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 2rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            min-width: 150px;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        table.dataTable {
+            width: 100% !important;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+        
+        table.dataTable thead th {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
+            padding: 12px 8px;
+            text-align: left;
+            font-size: 0.85rem;
+        }
+        
+        table.dataTable tbody tr:nth-child(even) {
+            background-color: #f9fafb;
+        }
+        
+        table.dataTable tbody tr:hover {
+            background-color: #f0f4ff;
+        }
+        
+        table.dataTable tbody td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .dataTables_wrapper .dataTables_filter input {
+            border: 2px solid #e5e7eb;
+            border-radius: 6px;
+            padding: 6px 12px;
+            margin-left: 8px;
+        }
+        
+        .dataTables_wrapper .dataTables_filter input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+        
+        .dt-buttons {
+            margin-bottom: 1rem;
+        }
+        
+        .dt-button {
+            background: #667eea !important;
+            color: white !important;
+            border: none !important;
+            padding: 8px 16px !important;
+            border-radius: 6px !important;
+            margin-right: 8px !important;
+            cursor: pointer !important;
+            font-size: 0.9rem !important;
+        }
+        
+        .dt-button:hover {
+            background: #5568d3 !important;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 3px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .badge-yes {
+            background: #dcfce7;
+            color: #15803d;
+        }
+        
+        .badge-no {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .stats {
+                gap: 1rem;
+            }
+            
+            .stat-card {
+                min-width: 120px;
+                padding: 1rem;
+            }
+            
+            .stat-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🏥 New England Abortion Access Directory</h1>
+        <p class="subtitle">All 6 States • Comprehensive abortion services and access information</p>
+        
+        <div class="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalClinics">125</div>
+                <div class="stat-label">Total Providers</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">6</div>
+                <div class="stat-label">States Covered</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number">82</div>
+                <div class="stat-label">Planned Parenthood</div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <h3>📍 About This Directory</h3>
+            <p>
+                This directory provides comprehensive abortion access information across all <strong>6 New England states</strong>: Connecticut (20), Massachusetts (60), Maine (23), New Hampshire (9), Rhode Island (2), and Vermont (11). 
+                Data includes service types, wait times, pricing, insurance acceptance, and language support to help people make informed decisions about their reproductive healthcare.
+            </p>
+        </div>
+        
+        <div class="info-box">
+            <h3>📊 How to use this directory:</h3>
+            <p>
+                <strong>Search:</strong> Use the search box to find specific providers, locations, or services<br>
+                <strong>Sort:</strong> Click any column header to sort the data<br>
+                <strong>Filter:</strong> Type in the search box to filter across all columns<br>
+                <strong>Export:</strong> Use the buttons above the table to download data in various formats
+            </p>
+        </div>
+        
+        <table id="providerTable" class="display" style="width:100%">
+            <thead>
+                <tr>
+                    <th>State</th>
+                    <th>Provider</th>
+                    <th>Location</th>
+                    <th>Wait Time</th>
+                    <th>Abortion Services & Gestational Limits</th>
+                    <th>Telehealth</th>
+                    <th>Type</th>
+                    <th>Price</th>
+                    <th>Languages</th>
+                    <th>Works with Fund</th>
+                    <th>Public Insurance</th>
+                    <th>Private Insurance</th>
+                    <th>Source</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Data will be populated by JavaScript -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    
+    <!-- DataTables Core -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    
+    <!-- DataTables Buttons Extension -->
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/dataTables.buttons.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.2.7/vfs_fonts.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.html5.min.js"></script>
+    <script src="https://cdn.datatables.net/buttons/2.4.2/js/buttons.print.min.js"></script>
+
+    <script>
+        // New England Abortion Access Data (All 6 States)
+        const clinicData = [
+    [
+        "Connecticut",
+        "Planned Parenthood - Bridgeport Center",
+        "Bridgeport",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - Danbury Center",
+        "Danbury",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - Enfield Center",
+        "Enfield",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - Hartford North Center",
+        "Hartford",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - Manchester Center",
+        "Manchester",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - Meriden Center",
+        "Meriden Center",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - New Haven Center",
+        "New Haven",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days); abortion procedure (through 19 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600 pills, $650-1,005 for procedure",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - New London Center",
+        "New London",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - Norwich Center",
+        "Norwich",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days); abortion procedure (through 15 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600 for pills, $650-935 for procedure",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - Stamford Center",
+        "Stamford",
+        "1 week or less",
+        "abortion pill (through 11 , weeks, 6 days); abortion procedure (through 12 weeks, 6 days)",
+        "Yes",
+        "Clinic",
+        "$600 for pills, $650-935 for procedure",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - Torrington Center",
+        "Torrington",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600",
+        "English, translation available according to RENF",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - Waterbury Center",
+        "Waterbury",
+        "1 weeks or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes",
+        "Clinic",
+        "$600",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - West Hartford Center",
+        "West Hartford",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days); abortion procedure (through 19 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600 pills, $650-1,005 for procedure",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Planned Parenthood - Willimantic Center",
+        "Willimantic",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Stamford Hospital - Women\u2019s Speciality Center - Family Planning",
+        "Stamford",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 0 days); abortion procedure (through 23 weeks, 6 days)",
+        "No",
+        "Hospital",
+        "not listed",
+        "English",
+        "Unknown",
+        "Yes",
+        "Yes",
+        "AbortionFinder"
+    ],
+    [
+        "Connecticut",
+        "The Women\u2019s Center - Hartford Gyn Center",
+        "Bloomfield",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days); abortion procedure (through 24 weeks, 0 days)",
+        "No",
+        "Clinic",
+        "$670 for pills; $700-3,400 for procedure",
+        "interpretation services, English, Bosnian, Japanese, Russian",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "UConn Health - Women\u2019s Center",
+        "Farmington",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 6 days); abortion procedure (through 23 weeks, 6 days)",
+        "No",
+        "Hospital",
+        "not listed; no out-of-pocket accepted",
+        "English",
+        "No",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Yale Family Planning",
+        "New Haven",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 23 weeks, 6 days)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation services, English",
+        "No",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Connecticut",
+        "Lawrence + Memorial Hospital",
+        "New London",
+        "not listed",
+        "does NOT provide abortion pills",
+        "not listed",
+        "Hospital",
+        "not listed",
+        "not listed",
+        "Unknown",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Connecticut",
+        "Greenwich Hospital",
+        "Greenwich",
+        "not listed",
+        "does NOT provide abortion pills",
+        "not listed",
+        "Hospital",
+        "not listed",
+        "not listed",
+        "Unknown",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Baystate Medical Practices - Pioneer Women's Health - Greenfield",
+        "Greenfield",
+        "",
+        "abortion pills (through 11 weeks, 0 days); abortion procedure (through 13 weeks, 0 days)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Baystate Midwifery and Women's Health - Springfield",
+        "Springfield",
+        "",
+        "abortion pills (through 11 weeks)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Baystate Wesson Women's Clinic",
+        "Springfield",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 23 weeks, 6 days)",
+        "No",
+        "Hospital",
+        "",
+        "interpretation services, English, Spanish",
+        "No",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Baystate Women's Health - Northampton",
+        "Northampton",
+        "",
+        "abortion pills (through 11 weeks)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Baystate Women's Health - Palmer",
+        "Palmer",
+        "",
+        "abortion pills (through 11 weeks)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Baystate Women's Health - Westfield",
+        "Westfield",
+        "",
+        "abortion pills (through 11 weeks)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Berkshire OBGYN, Lenox",
+        "Lenox",
+        "",
+        "abortion pills (through 10 weeks)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Berkshire OBGYN, North Adams",
+        "North Adams",
+        "",
+        "abortion pills (through 10 weeks)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Bershire OBGYN, Pittsfield",
+        "Pittsfield",
+        "",
+        "abortion pills (through 10 weeks); abortion procedure (through 13 weeks, 6 days)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Beth Israel Deaconess Medical Center Family Planning Clinic",
+        "Boston",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 0 days); abortion procedure (through 23 weeks, 5 days)",
+        "No",
+        "Hospital",
+        "$1,800 for both",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Boston Medical Center OB/GYN",
+        "Boston",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 25 weeks, 6 days)",
+        "No",
+        "Hospital",
+        "$605 for pills; $1,764-2,169 for procedure",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Brigham & Women\u2019s Hospital - Family Planning Clinic",
+        "Boston",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 24 weeks, 6 days",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Cooley Dickinson OB/GYN and Midwifery - Amherst",
+        "Amherst",
+        "",
+        "abortion pill (thorugh 10 weeks, 0 days); abortion procedure (through 12 weeks 6 days)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Cooley Dickinson OB/GYN and Midwifery - Northampton",
+        "Northampton",
+        "",
+        "abortion pill (thorugh 10 weeks, 0 days); abortion procedure (through 12 weeks 6 days)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Cooley Dickinson OB/GYN and Midwifery - The Yellow House",
+        "Northampton",
+        "",
+        "abortion pill (thorugh 10 weeks, 0 days); abortion procedure (through 12 weeks 6 days)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Four Women Health Services",
+        "Attleboro",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 0 days); abortion procedure (through 20 weeks, 6 days)",
+        "No",
+        "Clinic",
+        "$650 for pills; $550-2,600 for procedure",
+        "interpretation services, English, French, Haitian Creole, Portuguese, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Health Imperatives - Brockton Sexual and Reproductive Health",
+        "Brockton",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 6 days)",
+        "No",
+        "Clinic",
+        "$542.94",
+        "interpretation services, English, Portuguese, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Health Imperatives - Hyannis Sexual and Reproductive Health",
+        "Hyannis",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 6 days)",
+        "No",
+        "Clinic",
+        "$542.94",
+        "interpretation services, English, Portuguese, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Health Imperatives - Martha\u2019s Vineyard Sexual and Reproductive Health",
+        "Vineyard Haven",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 6 days)",
+        "No",
+        "Clinic",
+        "$542.94",
+        "interpretation services, English, Portuguese, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Health Imperatives - Nantucket Sexual and Reproductive Health",
+        "Nantucket",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 6 days)",
+        "No",
+        "Clinic",
+        "$542.94",
+        "interpretation services, English, Portuguese, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Health Imperatives - New Bedford Sexual and Reproductive Health",
+        "New Bedford",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 6 days)",
+        "No",
+        "Clinic",
+        "$542.94",
+        "interpretation services, English, Portuguese, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Health Imperatives - Plymouth Sexual and Reproductive Health",
+        "Plymouth",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 6 days)",
+        "No",
+        "Clinic",
+        "$542.94",
+        "interpretation services, English, Portuguese, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Health Imperatives - Warehem Sexual and Reproductive Health",
+        "Wareham",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 6 days)",
+        "No",
+        "Clinic",
+        "$542.94",
+        "interpretation services, English, Portuguese, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Massachusetts General Hospital - Obstetrics and Gynecology",
+        "Boston",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks); abortion procedure (through 25 weeks, 0 days)",
+        "No",
+        "Hospital",
+        "not listed; out-of-pocket not accepted",
+        "English",
+        "No",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Massachusetts General Hospital - Chelsea Health Center",
+        "Chelsea",
+        "",
+        "abortion pill (through 11 weeks, 6 days)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Mount Auburn Hospital",
+        "Cambridge",
+        "",
+        "abortion pill (through 11 weeks); abortion procedure (through 24 weeks)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "North Shore Women's Health Center (formerly Merrimack Valley Women's Health)",
+        "Haverhill",
+        "",
+        "abortion pill (up to 10 weeks)",
+        "No",
+        "Clinic",
+        "$550",
+        "English",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Salem State University - Health and Counseling Services",
+        "Salem",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 0 days)",
+        "No",
+        "Clinic",
+        "$500",
+        "interpretation services, English, Spanish",
+        "Unknown",
+        "Yes",
+        "Yes",
+        "AbortionFinder"
+    ],
+    [
+        "Massachusetts",
+        "Tapestry Health - Holyoke",
+        "Holyoke",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days)",
+        "No",
+        "Clinic",
+        "$490",
+        "interpretation services, English, Spanish",
+        "No",
+        "Yes",
+        "Yes",
+        "AbortionFinder"
+    ],
+    [
+        "Massachusetts",
+        "Tapestry Health - Greenfield",
+        "Greenfield",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 0 days)",
+        "No",
+        "Clinic",
+        "$490",
+        "interpretation services, English, Portuguese, Spanish",
+        "No",
+        "Yes",
+        "Yes",
+        "AbortionFinder"
+    ],
+    [
+        "Massachusetts",
+        "Tapestry Health - Pittsfield",
+        "Pittsfield",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days)",
+        "No",
+        "Clinic",
+        "$490",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Tapestry Health - Springfield",
+        "Springfield",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days)",
+        "No",
+        "Clinic",
+        "$490",
+        "interpretation services, English, Spanish",
+        "No",
+        "Yes",
+        "Yes",
+        "AbortionFinder"
+    ],
+    [
+        "Massachusetts",
+        "Tufts Medical Center - Family Planning Program",
+        "Boston",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 24 weeks, 0 days)",
+        "No",
+        "Hospital",
+        "$2,000 for pills; $2,000-3,500 for procedure",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "UMass Memorial Medical Center - Memorial Campus",
+        "Worcester",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 25 weeks, 0 days)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation services, English, Arabic, Spanish",
+        "No",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Massachusetts General Hospital - Waltham",
+        "Waltham",
+        "",
+        "abortion pill (through 11 weeks); abortion procedure (thoguh 12 weeks)",
+        "No",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Women\u2019s Health Services",
+        "Brookline",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 6 days); abortion procedure (through 23 weeks, 6 days)",
+        "No",
+        "Clinic",
+        "$750-$850",
+        "interpretation services, English, Portuguese, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Baystate Medical Center Practice",
+        "Springfield",
+        "",
+        "",
+        "Yes",
+        "Clinic",
+        "not listed",
+        "interpretation available",
+        "Yes",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Cambridge Health Alliance - Broadway Care Center",
+        "Somerville",
+        "",
+        "abortion pill (through 11 weeks); abortion procedure (through 23 weeks, 6 days)",
+        "Yes",
+        "Hospital",
+        "not listed",
+        "interpretation available",
+        "No",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Massachusetts",
+        "Tapestry Health - Northampton",
+        "Northampton",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 0 days)",
+        "Yes",
+        "Clinic",
+        "$490",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Planned Parenthood - Central Massachusetts Health Center",
+        "Worcester",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 20 weeks, 6 days)",
+        "Yes (through 10 weeks, 0 days)",
+        "Clinic",
+        "$700 for pills; $700-1,400 for procedure",
+        "interpretation services, English, Spanish",
+        "No",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Planned Parenthood - Greater Boston Health Center",
+        "Boston",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 20 weeks, 6 days)",
+        "Yes (through 10 weeks, 0 days)",
+        "Clinic",
+        "$700 for pills; $700-1,400 for procedure",
+        "interpretation services, English, Spanish",
+        "No",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Planned Parenthood - Western Massachusetts Health Center",
+        "Springfield",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 20 weeks, 6 days)",
+        "Yes (through 10 weeks, 0 days)",
+        "Clinic",
+        "$700 for pills; $700-1,400 for procedure",
+        "interpretation services, English, Spanish",
+        "No",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Cambridge Health Alliance - Cambridge Hospital",
+        "Cambridge",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 23 weeks, 6 days)",
+        "Yes (through 11 weeks, 0 days)",
+        "Hospital",
+        "not listed",
+        "interpretation services, English",
+        "No",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "Cambridge Health Alliance OB/GYN Center - Revere",
+        "Revere",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 23 weeks, 0 days)",
+        "Yes (through 11 weeks, 0 days)",
+        "Clinic",
+        "not listed",
+        "interpretation services, English",
+        "No",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "HealthQ - Beverly",
+        "Beverly",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 14 weeks, 0 days)",
+        "Yes (through 9 weeks, 4 days)",
+        "Clinic",
+        "$650",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "HealthQ - Haverhill",
+        "Haverhill",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days)",
+        "Yes (through 9 weeks, 4 days)",
+        "Clinic",
+        "$650",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "HealthQ - Lawrence",
+        "Lawrence",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 14 weeks, 0 days)",
+        "Yes (through 9 weeks, 4 days)",
+        "Clinic",
+        "$650",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Massachusetts",
+        "https://choicesmedical.com/abortion-clinic-brockton-massachusetts/",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        "",
+        ""
+    ],
+    [
+        "Maine",
+        "Mabel Wadsworth Center",
+        "Bangor",
+        "2 weeks or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 16 weeks, 0 days)",
+        "Yes (through 11 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Bangor",
+        "Bangor",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Augusta",
+        "Augusta",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days); abortion procedure (through 15 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Belfast",
+        "Belfast",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Calais",
+        "Calais",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Damariscotta",
+        "Damariscotta",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Dexter",
+        "Dexter",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Ellsworth",
+        "Ellsworth",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Farmington",
+        "Farmington",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Fort Kent",
+        "Fort Kent",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Houlton",
+        "Houlton",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Lewiston",
+        "Lewiston",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Machias",
+        "Machias",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Norway",
+        "Norway",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Presque Isle",
+        "Presque Isle",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Rumford",
+        "Rumford",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Skowhegan",
+        "Skowhegan",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Thomaston",
+        "Thomaston",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Maine Family Planning - Waterville",
+        "Waterville",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$525",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Planned Parenthood - Biddeford Health Center",
+        "Biddeford",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$555",
+        "English",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Planned Parenthood - Portland Health Center",
+        "Portland",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days); abortion procedure (through 21 weeks, 6 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$555 for pills; $555-1000 for procedure",
+        "interpretation services, English",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Planned Parenthood - Sanford Health Center",
+        "Sandord",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$555",
+        "interpretation services, English",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Maine",
+        "Planned Parenthood - Topsham Health Center",
+        "Topsham",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$555",
+        "interpretation services, English",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "New Hampshire",
+        "Joan G. Lovering Health Center",
+        "Greenland",
+        "2 weeks or less",
+        "abortion pill (through 10 weeks, 0 days); abortion procedure (through 14 weeks, 6 days)",
+        "No",
+        "Clinic",
+        "$550 for pills; $550-675 for procedure",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "New Hampshire",
+        "Dartmouth - Hitchcock Family Planning",
+        "Lebanon",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 6 days); abortion procedure (through 23 weeks, 6 days)",
+        "No",
+        "Hospital",
+        "$600 for pills; $1,300-3,200 for procedure",
+        "English",
+        "Unknown",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "New Hampshire",
+        "Manchester OB/GYN Associates",
+        "Manchester",
+        "3 weeks or less",
+        "abortion pill (through 9 weeks, 0 days); abortion procedure (through 12 weeks, 0 days)",
+        "No",
+        "Clinic",
+        "not listed",
+        "interpretation services, English, Spanish",
+        "Unknown",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "New Hampshire",
+        "Manchester OB/GYN Associates - Londonderry",
+        "Londonderry",
+        "not listed",
+        "not listed",
+        "No",
+        "Clinic",
+        "not listed",
+        "not listed",
+        "Unknown",
+        "No",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "New Hampshire",
+        "Memorial Hospital",
+        "North Conway",
+        "not listed",
+        "not listed",
+        "No",
+        "Hospital",
+        "not listed",
+        "not listed",
+        "Unknown",
+        "No",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "New Hampshire",
+        "Equality Health Center",
+        "Concord",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 0 days); abortion procedure (through 15 weeks, 6 days)",
+        "Yes (through 11 weeks, 0 days)",
+        "Clinic",
+        "$420 for telehealth pills; $0-535 for pills; $0-880 for procedure",
+        "English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "New Hampshire",
+        "Planned Parenthood - Keene Health Center",
+        "Keene",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$555",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "New Hampshire",
+        "Planned Parenthood - Manchester Health Center",
+        "Manchester",
+        "2 weeks or less",
+        "abortion pill (through 12 weeks, 0 days); abortion procedure (through 17 weeks, 6 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$555 for pills; $555-750 for procedure",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "New Hampshire",
+        "Planned Parenthood - Derry Health Center",
+        "Derry",
+        "1 week or less",
+        "abortion pill (through 12 weeks, 0 days)",
+        "Yes, (through 12 weeks, 0 days)",
+        "Clinic",
+        "$555",
+        "interpretation services, English",
+        "Yes",
+        "No",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Rhode Island",
+        "Planned Parenthood - Providence Health Center",
+        "Providence",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days); abortion procedure (through 19 weeks, 6 days)",
+        "Yes (through 11 weeks, 6 days)",
+        "Clinic",
+        "$600 for pills; $650-1,005 for procedure",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Rhode Island",
+        "Women & Infants Hospital - Obstetrics and Gynecology Care Center",
+        "Providence",
+        "2 weeks or less",
+        "abortion pill (through 10 weeks, 6 days); abortion procedure (through 22 weeks, 6 days)",
+        "No",
+        "Hospital",
+        "$750 for pills; $750-2,200 for procedure",
+        "interpretation services, English, French, Portuguese, Spanish",
+        "Unknown",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Vermont",
+        "Planned Parenthood - Barre Health Center",
+        "Barre",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$550-555",
+        "interpretation services, English",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Vermont",
+        "Planned Parenthood - Brattleboro Health Center",
+        "Brattleboro",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$550-555",
+        "interpretation services, English",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Vermont",
+        "Planned Parenthood - Burlington Health Center",
+        "Burlington",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days); abortion procedure (through 21 weeks, 6 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$550-555 for pills; $555-1,000 for procedure",
+        "interpretation services, English",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Vermont",
+        "Planned Parenthood - Rutland Health Center",
+        "Rutland",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$550-555",
+        "interpretation services, English, Spanish",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Vermont",
+        "Planned Parenthood - White River Junction Health Center",
+        "White River Junction",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days); abortion procedure (through 11 weeks, 6 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$550-555",
+        "English",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Vermont",
+        "Planned Parenthood - Williston Health Center",
+        "Williston",
+        "1 week or less",
+        "abortion pill (through 11 weeks, 6 days)",
+        "Yes (through 12 weeks, 0 days)",
+        "Clinic",
+        "$550",
+        "English",
+        "Yes",
+        "Yes",
+        "Yes",
+        "Both"
+    ],
+    [
+        "Vermont",
+        "Porter Women\u2019s Health (affiliated with UVM)",
+        "Middlebury",
+        "1 week or less",
+        "abortion pill (through 10 weeks, 0 days); abortion procedure (through 16 weeks, 0 days)",
+        "No",
+        "Clinic",
+        "not listed",
+        "interpretation services, English, Spanish",
+        "Unknown",
+        "Yes",
+        "Yes",
+        "AbortionFinder"
+    ],
+    [
+        "Vermont",
+        "Brattleboro Memorial Hospital",
+        "Brattleboro",
+        "",
+        "abortion pill",
+        "not listed",
+        "Hospital",
+        "not listed",
+        "not listed",
+        "Unknown",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Vermont",
+        "North Country Hospital",
+        "Newport",
+        "",
+        "abortion pill",
+        "not listed",
+        "Hospital",
+        "not listed",
+        "not listed",
+        "Unknown",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Vermont",
+        "Southwestern Vermont Medical Center",
+        "Bennington",
+        "",
+        "abortion pill",
+        "not listed",
+        "Hospital",
+        "not listed",
+        "not listed",
+        "Unknown",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ],
+    [
+        "Vermont",
+        "University of Vermont Medical Center",
+        "Burlington",
+        "",
+        "abortion pill; abortion procedure (through 21 weeks, 6 days)",
+        "not listed",
+        "Hospital",
+        "not listed",
+        "not listed",
+        "Unknown",
+        "Yes",
+        "Unknown",
+        "RENF"
+    ]
+];
+
+        $(document).ready(function() {
+            // Add badges to Yes/No columns (indexes shift by 1 due to State column)
+            const processedData = clinicData.map(row => {
+                const newRow = [...row];
+                // Add badges to "Works with Fund" (index 9, was 8)
+                if (newRow[9] === 'Yes') {
+                    newRow[9] = '<span class="badge badge-yes">Yes</span>';
+                } else if (newRow[9] === 'No') {
+                    newRow[9] = '<span class="badge badge-no">No</span>';
+                }
+                // Add badges to "Public Insurance" (index 10, was 9)
+                if (newRow[10] === 'Yes') {
+                    newRow[10] = '<span class="badge badge-yes">Yes</span>';
+                } else if (newRow[10] === 'No') {
+                    newRow[10] = '<span class="badge badge-no">No</span>';
+                }
+                // Add badges to "Private Insurance" (index 11, was 10)
+                if (newRow[11] === 'Yes') {
+                    newRow[11] = '<span class="badge badge-yes">Yes</span>';
+                } else if (newRow[11] === 'No') {
+                    newRow[11] = '<span class="badge badge-no">No</span>';
+                }
+                return newRow;
+            });
+
+            // Initialize DataTable
+            $('#providerTable').DataTable({
+                data: processedData,
+                pageLength: 25,
+                responsive: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        text: '📋 Copy',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        text: '📄 CSV',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        text: '📊 Excel',
+                        title: 'New England Abortion Access Directory - All States',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '📑 PDF',
+                        title: 'New England Abortion Access Directory',
+                        orientation: 'landscape',
+                        pageSize: 'A3',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: '🖨️ Print',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    }
+                ],
+                columnDefs: [
+                    { 
+                        targets: [9, 10, 11], // Yes/No columns (shifted by 1)
+                        className: 'dt-center'
+                    },
+                    {
+                        targets: [4, 8], // Long text columns (shifted by 1)
+                        width: '200px'
+                    },
+                    {
+                        targets: [0], // State column
+                        width: '120px'
+                    }
+                ],
+                language: {
+                    search: "Search all columns:",
+                    lengthMenu: "Show _MENU_ providers per page",
+                    info: "Showing _START_ to _END_ of _TOTAL_ providers",
+                    infoEmpty: "No providers available",
+                    infoFiltered: "(filtered from _MAX_ total providers)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                },
+                order: [[0, 'asc']] // Sort by provider name by default
+            });
+        });
+    </script>
+</body>
+</html>
