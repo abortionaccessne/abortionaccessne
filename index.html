@@ -237,6 +237,20 @@
         .tab-icon {
             margin-right: 0.5rem;
         }
+    
+        
+        /* Checkbox styling */
+        .check-yes {
+            color: #15803d;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .check-no {
+            color: #991b1b;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
     </style>
 </head>
 <body>
@@ -254,8 +268,8 @@
                 <div class="stat-label">Telehealth Vendors</div>
             </div>
             <div class="stat-card">
-                <div class="stat-number">6</div>
-                <div class="stat-label">States Covered</div>
+                <div class="stat-number">14</div>
+                <div class="stat-label">Abortion Funds</div>
             </div>
         </div>
         
@@ -263,8 +277,9 @@
             <h3>📍 About This Directory</h3>
             <p>
                 This directory provides comprehensive abortion access information across all <strong>6 New England states</strong>. 
-                Choose between <strong>in-person providers</strong> (125 clinics and hospitals) or <strong>telehealth services</strong> (22 vendors offering medication abortion by mail). 
-                Data includes service types, gestational limits, pricing, insurance, and language support to help you make informed decisions about your reproductive healthcare.
+                Choose between <strong>in-person providers</strong> (125 clinics and hospitals), <strong>telehealth services</strong> (22 vendors offering medication abortion by mail), 
+                or <strong>abortion funds</strong> (14 organizations providing financial and logistical support). 
+                Data includes service types, gestational limits, pricing, insurance, language support, and funding assistance to help you make informed decisions about your reproductive healthcare.
             </p>
         </div>
         
@@ -275,6 +290,9 @@
             </button>
             <button class="tab-button" onclick="switchTab('telehealth', event)">
                 <span class="tab-icon">💻</span> Telehealth Services
+            </button>
+            <button class="tab-button" onclick="switchTab('funds', event)">
+                <span class="tab-icon">💝</span> Abortion Funds
             </button>
         </div>
         
@@ -342,6 +360,51 @@
                         <th>Languages</th>
                         <th>Price</th>
                         <th>Insurance & Payment</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Data will be populated by JavaScript -->
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Abortion Funds Tab -->
+        <div id="funds-tab" class="tab-content">
+            <div class="info-box">
+                <h3>💝 About Abortion Funds</h3>
+                <p>
+                    These organizations provide <strong>financial assistance</strong> to help cover abortion costs, and/or <strong>logistical support</strong> 
+                    such as travel, lodging, childcare, and other practical needs. Many funds work directly with abortion seekers, while others work through 
+                    clinics or networks. All funds are part of the <strong>National Network of Abortion Funds (NNAF)</strong>.
+                </p>
+            </div>
+            
+            <div class="info-box">
+                <h3>📊 How to Read This Table:</h3>
+                <p>
+                    <strong>✓</strong> = Fund provides this type of support<br>
+                    <strong>✗</strong> = Fund does not provide this type of support<br>
+                    <strong>"Works directly with abortion seekers"</strong> means you can contact them directly. Otherwise, they work through clinics.
+                </p>
+            </div>
+            
+            <div class="info-box">
+                <h3>📞 Getting Help:</h3>
+                <p>
+                    Visit the <strong>National Abortion Federation Hotline</strong> at <strong>1-800-772-9100</strong> or visit 
+                    <strong>abortionfunds.org</strong> to find contact information for these funds. They can help you navigate 
+                    financial assistance and connect you with the right resources for your situation.
+                </p>
+            </div>
+            
+            <table id="fundsTable" class="display" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>State</th>
+                        <th>Fund Name</th>
+                        <th>Financial Support</th>
+                        <th>Logistical Support</th>
+                        <th>Works Directly with You</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -3009,6 +3072,298 @@
     ]
 ];
 
+        // Abortion Funds Data - All 6 States
+        const fundsData = [
+    [
+        "Connecticut",
+        "The REACH Fund of Connecticut",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Connecticut",
+        "Indigenous Women Rising Rain Fund",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Connecticut",
+        "Reprocare",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Connecticut",
+        "The Brigid Alliance",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Connecticut",
+        "Abortion Freedom Fund",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Connecticut",
+        "Women's Reproductive Rights Assistance Project",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Massachusetts",
+        "Eastern Massachusetts Abortion Fund",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Massachusetts",
+        "Tides for Reproductive Freedom",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Massachusetts",
+        "Abortion Rights Fund of Western Massachusetts",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Massachusetts",
+        "Indigenous Women Rising Rain Fund",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Massachusetts",
+        "Reprocare",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Massachusetts",
+        "The Brigid Alliance",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Massachusetts",
+        "Abortion Freedom Fund",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Massachusetts",
+        "Women's Reproductive Rights Assistance Project",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Maine",
+        "The Laura Fund of the Planned Parenthood of Northern New England",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Maine",
+        "Safe Abortions for Everyone Maine",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Maine",
+        "Indigenous Women Rising Rain Fund",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Maine",
+        "Reprocare",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Maine",
+        "The Brigid Alliance",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Maine",
+        "Abortion Freedom Fund",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Maine",
+        "Women's Reproductive Rights Assistance Project",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "New Hampshire",
+        "Reproductive Freedom Fund of New Hampshire",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "New Hampshire",
+        "The Laura Fund of the Planned Parenthood of Northern New England",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "New Hampshire",
+        "Indigenous Women Rising Rain Fund",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "New Hampshire",
+        "Reprocare",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "New Hampshire",
+        "The Brigid Alliance",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "New Hampshire",
+        "Abortion Freedom Fund",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "New Hampshire",
+        "Women's Reproductive Rights Assistance Project",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Rhode Island",
+        "Rhode Island Abortion Fund",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Rhode Island",
+        "Indigenous Women Rising Rain Fund",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Rhode Island",
+        "Reprocare",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Rhode Island",
+        "The Brigid Alliance",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Rhode Island",
+        "Abortion Freedom Fund",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Rhode Island",
+        "Women's Reproductive Rights Assistance Project",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Vermont",
+        "Vermont Access to Reproductive Freedom",
+        "\u2713",
+        "\u2717",
+        "\u2713"
+    ],
+    [
+        "Vermont",
+        "The Laura Fund of the Planned Parenthood of Northern New England",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Vermont",
+        "Indigenous Women Rising Rain Fund",
+        "\u2713",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Vermont",
+        "Reprocare",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Vermont",
+        "The Brigid Alliance",
+        "\u2717",
+        "\u2713",
+        "\u2713"
+    ],
+    [
+        "Vermont",
+        "Abortion Freedom Fund",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ],
+    [
+        "Vermont",
+        "Women's Reproductive Rights Assistance Project",
+        "\u2713",
+        "\u2717",
+        "\u2717"
+    ]
+];
+
+
 
         $(document).ready(function() {
             // Add badges to Yes/No columns (indexes shift by 1 due to State column)
@@ -3175,6 +3530,89 @@
                     info: "Showing _START_ to _END_ of _TOTAL_ listings",
                     infoEmpty: "No vendors available",
                     infoFiltered: "(filtered from _MAX_ total listings)",
+                    paginate: {
+                        first: "First",
+                        last: "Last",
+                        next: "Next",
+                        previous: "Previous"
+                    }
+                },
+                order: [[0, 'asc']] // Sort by state by default
+            });
+            
+            // Initialize Funds Table
+            $('#fundsTable').DataTable({
+                data: fundsData.map(row => {
+                    // Apply checkbox styling
+                    return [
+                        row[0], // State
+                        row[1], // Fund name
+                        row[2] === '✓' ? '<span class="check-yes">✓</span>' : '<span class="check-no">✗</span>',
+                        row[3] === '✓' ? '<span class="check-yes">✓</span>' : '<span class="check-no">✗</span>',
+                        row[4] === '✓' ? '<span class="check-yes">✓</span>' : '<span class="check-no">✗</span>'
+                    ];
+                }),
+                pageLength: 25,
+                responsive: true,
+                dom: 'Bfrtip',
+                buttons: [
+                    {
+                        extend: 'copy',
+                        text: '📋 Copy',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'csv',
+                        text: '📄 CSV',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'excel',
+                        text: '📊 Excel',
+                        title: 'New England Abortion Funds',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'pdf',
+                        text: '📑 PDF',
+                        title: 'New England Abortion Funds',
+                        orientation: 'landscape',
+                        pageSize: 'A4',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    },
+                    {
+                        extend: 'print',
+                        text: '🖨️ Print',
+                        exportOptions: {
+                            columns: ':visible'
+                        }
+                    }
+                ],
+                columnDefs: [
+                    {
+                        targets: [0], // State column
+                        width: '120px'
+                    },
+                    {
+                        targets: [2, 3, 4], // Checkbox columns
+                        className: 'dt-center',
+                        width: '150px'
+                    }
+                ],
+                language: {
+                    search: "Search abortion funds:",
+                    lengthMenu: "Show _MENU_ funds per page",
+                    info: "Showing _START_ to _END_ of _TOTAL_ funds",
+                    infoEmpty: "No funds available",
+                    infoFiltered: "(filtered from _MAX_ total funds)",
                     paginate: {
                         first: "First",
                         last: "Last",
